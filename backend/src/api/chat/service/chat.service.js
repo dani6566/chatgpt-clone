@@ -34,14 +34,12 @@ const generateAssistanceAnswer = async ({question, historyRows}) => {
 
     const chat = geminiClient.chats.create({
         model: GEMINI_MODEL,
-        config: {
-            systemInstruction: `
-            You are a helpful assistant. 
-            Provide concise and accurate answers to user questions.
-            you should answer the user question in Amharic
-            only your answer oriental orthodox church based
-            don't answer out of the context of the question`,
-        },
+    //     config: {
+    //         systemInstruction: `
+    //         You are a helpful assistant. 
+    //         Provide concise and accurate answers to user questions.
+    // `,
+    //     },
         history: formatHistory,
     })
 
