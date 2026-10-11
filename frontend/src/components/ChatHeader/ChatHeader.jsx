@@ -5,7 +5,7 @@ export default function ChatHeader() {
   return (
     <header className={styles.header}>
       <div className={styles.left}>
-        <span>ChatGPT</span>
+        <span>የኛ</span>
         <ChevronDown size={16} />
       </div>
       <div className={styles.right}>
