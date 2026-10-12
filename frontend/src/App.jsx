@@ -6,7 +6,9 @@ import MessageList from './components/MessageList/MessageList';
 import ChatInput from './components/ChatInput/ChatInput';
 import './App.css';
 
-const API_BASE_URL = 'http://localhost:9999/api';
+// const API_BASE_URL = 'https://chatgpt-clone-cyan-ten.vercel.app/api';
+const API_BASE_URL = 'https://chatgpt-clone-oa2l.onrender.com/api';
+
 
 function App() {
   const [conversations, setConversations] = useState([]);
