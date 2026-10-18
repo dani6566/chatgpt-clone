@@ -12,8 +12,8 @@ export const getRecentConversationsRows = async (limit = 5, userId) => {
         `SELECT id, content, role, created_at FROM conversation
         WHERE owner_user_id = ?
         ORDER BY id DESC
-        LIMIT ?`,
-        [userId, safeLimit],
+        LIMIT ${safeLimit}`,
+        [userId],
     );
     return rows.reverse();
 };
