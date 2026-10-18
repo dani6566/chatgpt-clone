@@ -37,6 +37,7 @@
   line-height: 1.6;
   max-width: 80%;
   white-space: pre-wrap;
+  overflow-wrap: anywhere;
 }
 
 .message.assistant .content {
@@ -133,6 +134,7 @@
 
 .markdownBody pre {
   padding: 16px;
+  max-width: 100%;
   overflow: auto;
   font-size: 85%;
   line-height: 1.45;
@@ -151,4 +153,38 @@
   word-wrap: normal;
   background-color: transparent;
   border: 0;
+}
+
+@media (max-width: 640px) {
+  .message {
+    gap: 10px;
+    padding: 0 12px;
+  }
+
+  .avatar {
+    width: 28px;
+    height: 28px;
+  }
+
+  .content {
+    max-width: calc(100% - 38px);
+    padding: 10px 12px;
+    font-size: 14px;
+  }
+
+  .message.assistant .content {
+    max-width: calc(100% - 38px);
+  }
+
+  .markdownBody pre {
+    padding: 12px;
+  }
+
+  .markdownBody h1 {
+    font-size: 1.6em;
+  }
+
+  .markdownBody h2 {
+    font-size: 1.35em;
+  }
 }

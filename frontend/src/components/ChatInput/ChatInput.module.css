@@ -25,6 +25,7 @@
 
 .input {
   flex: 1;
+  min-width: 0;
   background: transparent;
   border: none;
   color: var(--text-primary);
@@ -59,4 +60,23 @@
 
 .submitBtn:hover:not(:disabled) {
   opacity: 0.8;
+}
+
+@media (max-width: 640px) {
+  .container {
+    padding: 8px 10px calc(10px + env(safe-area-inset-bottom));
+  }
+
+  .form {
+    padding: 5px 8px;
+  }
+
+  .icon {
+    padding: 6px;
+  }
+
+  .input {
+    padding: 10px 6px;
+    font-size: 16px;
+  }
 }

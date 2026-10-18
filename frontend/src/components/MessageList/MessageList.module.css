@@ -17,6 +17,19 @@
   color: var(--text-primary);
 }
 
+@media (max-width: 640px) {
+  .messages {
+    padding: 16px 0;
+    gap: 18px;
+  }
+
+  .empty {
+    padding: 0 20px;
+    font-size: 20px;
+    text-align: center;
+  }
+}
+
 .loadingContainer {
   display: flex;
   padding: 0 24px;

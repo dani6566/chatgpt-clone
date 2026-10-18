@@ -1,0 +1,145 @@
+.page {
+  height: 100vh;
+  height: 100dvh;
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  overflow-y: auto;
+  background:
+    radial-gradient(ellipse at 50% 0%, rgba(16, 163, 127, 0.12), transparent 55%),
+    var(--bg-main);
+}
+
+.card {
+  width: min(100%, 420px);
+  padding: 40px;
+  border: 1px solid var(--border-color);
+  border-radius: 18px;
+  background: #1b1b1b;
+  box-shadow: 0 24px 80px rgba(0, 0, 0, 0.28);
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 32px;
+  color: var(--text-primary);
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.brandIcon {
+  width: 38px;
+  height: 38px;
+  display: grid;
+  place-items: center;
+  border-radius: 12px;
+  color: #fff;
+  background: var(--accent-color);
+}
+
+.card h1 {
+  font-size: 26px;
+  letter-spacing: -0.6px;
+}
+
+.subtitle {
+  margin-top: 9px;
+  color: var(--text-secondary);
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  margin-top: 28px;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  color: var(--text-primary);
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.field input {
+  width: 100%;
+  min-height: 46px;
+  padding: 0 13px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 9px;
+  outline: none;
+  color: var(--text-primary);
+  background: #242424;
+  font: inherit;
+}
+
+.field input:focus {
+  border-color: var(--accent-color);
+  box-shadow: 0 0 0 3px rgba(16, 163, 127, 0.15);
+}
+
+.field input::placeholder {
+  color: #777;
+}
+
+.submit {
+  min-height: 46px;
+  border: 0;
+  border-radius: 9px;
+  color: #fff;
+  background: var(--accent-color);
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.submit:hover:not(:disabled) {
+  background: #0d8f70;
+}
+
+.submit:disabled {
+  cursor: wait;
+  opacity: 0.7;
+}
+
+.error {
+  color: #ff8c8c;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.switch {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 5px;
+  margin-top: 24px;
+  color: var(--text-secondary);
+  font-size: 13px;
+}
+
+.switch button {
+  border: 0;
+  color: #58c9aa;
+  background: none;
+  font: inherit;
+  cursor: pointer;
+}
+
+.switch button:hover {
+  text-decoration: underline;
+}
+
+@media (max-width: 480px) {
+  .card {
+    padding: 30px 24px;
+  }
+}
