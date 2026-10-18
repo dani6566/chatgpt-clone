@@ -5,22 +5,23 @@ const GEMINI_MODEL = process.env.GEMINI_MODEL;
 
 const geminiClient = new GoogleGenAI({apiKey: process.env.GEMINI_API_KEY});
 
-
-export const getRecentConversationsRows = async (limit=5) => {
+export const getRecentConversationsRows = async (limit = 5, userId) => {
     const normalizedLimit = Number.parseInt(limit, 10);
-    const safeLimit = Number.isNaN(normalizedLimit) ? 5 : normalizedLimit;
+    const safeLimit = Number.isNaN(normalizedLimit) ? 5 : Math.max(1, Math.min(normalizedLimit, 100));
     const [rows] = await db.execute(
-        `SELECT id, content ,role ,created_at FROM conversation
-        ORDER BY id DESC 
-        LIMIT ${safeLimit}`,
+        `SELECT id, content, role, created_at FROM conversation
+        WHERE owner_user_id = ?
+        ORDER BY id DESC
+        LIMIT ?`,
+        [userId, safeLimit],
     );
     return rows.reverse();
 };
 
-const getMessageById = async (id) => {
+const getMessageById = async (id, userId) => {
     const [rows] = await db.execute(
-        'SELECT id, content, role, token_count, created_at FROM conversation WHERE id = ?',
-        [id],
+        'SELECT id, content, role, token_count, created_at FROM conversation WHERE id = ? AND owner_user_id = ?',
+        [id, userId],
     );
     return rows[0];
 };
@@ -34,17 +35,9 @@ const generateAssistanceAnswer = async ({question, historyRows}) => {
 
     const chat = geminiClient.chats.create({
         model: GEMINI_MODEL,
-        config: {
-    systemInstruction: `
-    You are a knowledgeable, respectful, and faithful assistant rooted in the tradition, theology, and teachings of the Ethiopian Orthodox Tewahedo Church (EOTC). 
+        // config: {
     
-    Guidelines:
-    1. Language & Tone: Respond primarily in Amharic (አማርኛ) unless explicitly asked otherwise. Maintain a reverent, wise, and helpful tone fitting an Orthodox Christian context.
-    2. Theological Foundation: Answer questions based on the Holy Bible (as accepted by the EOTC), the faith of the Fathers, church tradition, liturgy, and canons of the Ethiopian Orthodox Tewahedo Church.
-    3. Accuracy & Context: Provide concise, clear, and accurate answers tailored to the user's context. Do not invent facts regarding church history, dogma, or scripture; ensure theological soundness.
-    4. Practical Support: Help users with scriptural explanations, church holidays, fasting seasons, prayers, and general spiritual guidance according to EOTC traditions.
-    `
-        },
+        // },
         history: formatHistory,
     })
 
@@ -55,7 +48,7 @@ const generateAssistanceAnswer = async ({question, historyRows}) => {
     }
 };
 
-export async function createConversationService(question){
+export async function createConversationService(question, userId){
     if (typeof question !== 'string' || !question.trim()) {
         const error = new Error('Question cannot be empty');
         error.status = 400;
@@ -64,23 +57,21 @@ export async function createConversationService(question){
 
     const normalizedQuestion = question.trim();
 
-    //get the last 5 history conversations from the database
-    const historyRows = await getRecentConversationsRows(5);
-    // console.log("historyRows:", historyRows);
+    const historyRows = await getRecentConversationsRows(5, userId);
 
     const [result] = await db.execute(
-        'INSERT INTO conversation (content,role) VALUES (?, "user")',
-        [normalizedQuestion]
+        'INSERT INTO conversation (owner_user_id, content, role) VALUES (?, ?, "user")',
+        [userId, normalizedQuestion]
     );
 
     const { text, totalTokens } = await generateAssistanceAnswer({ question: normalizedQuestion, historyRows });
 
     const [createAssistantMessageResult] = await db.execute(
-        'INSERT INTO conversation (role,content,token_count) VALUES (?, ?, ?)',
-        ['assistant', text, totalTokens]
+        'INSERT INTO conversation (owner_user_id, role, content, token_count) VALUES (?, ?, ?, ?)',
+        [userId, 'assistant', text, totalTokens]
     );
-    const userConversationId = await getMessageById(result.insertId);
-    const assistantConversation = await getMessageById(createAssistantMessageResult.insertId);
+    const userConversationId = await getMessageById(result.insertId, userId);
+    const assistantConversation = await getMessageById(createAssistantMessageResult.insertId, userId);
 
     return {
     userConversation: userConversationId,
