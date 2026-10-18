@@ -4,7 +4,7 @@ import jwt from 'jsonwebtoken';
 import db from '../../../db/db.config.js';
 
 const scrypt = promisify(scryptCallback);
-const TOKEN_LIFETIME = '7d';
+const TOKEN_LIFETIME = '1d';
 
 function getJwtSecret() {
     const secret = process.env.JWT_SECRET;
