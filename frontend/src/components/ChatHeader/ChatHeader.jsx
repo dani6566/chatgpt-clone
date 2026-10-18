@@ -13,7 +13,7 @@ export default function ChatHeader({ user, onMenuClick }) {
         <Menu size={22} />
       </button>
       <div className={styles.left}>
-        <span>የኛ</span>
+        <span>የኛChat</span>
         <ChevronDown size={16} />
       </div>
       <div className={styles.right}>
