@@ -23,10 +23,10 @@ async function startServer() {
     console.log('Database connection failed, continuing startup:', error.message);
   }
 
-  app.listen(4000, () => {
-    console.log('Server is running at http://localhost:4000');
+  const port = Number(process.env.PORT || 9999);
+  app.listen(port, () => {
+    console.log(`Server is running on port ${port}`);
   });
 }
 
 startServer();
-
